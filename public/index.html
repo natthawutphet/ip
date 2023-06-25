@@ -24,6 +24,12 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
+    <script>
+      if (typeof EventSource === 'undefined') {
+        alert('เบราว์เซอร์ของคุณไม่รองรับ Server-Sent Events (SSE) โปรดใช้เบราว์เซอร์ที่รองรับ เช่น Google Chrome');
+      }
+    </script>
+    
     <title>React App</title>
   </head>
   <body>

@@ -1,25 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
-function App() {
+const App = () => {
+  const [visitorCount, setVisitorCount] = useState(0);
+
+  useEffect(() => {
+    const eventSource = new EventSource('/status');
+
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const visitorCount = data.visitorCount;
+
+      setVisitorCount(visitorCount);
+    };
+
+    eventSource.onerror = () => {
+      console.error('เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์');
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>จำนวนผู้เยี่ยมชม: {visitorCount}</h1>
     </div>
   );
-}
+};
 
 export default App;
